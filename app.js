@@ -1,6 +1,6 @@
 // const identifiers = require('./identifiers').identifiers;
 const puppeteer = require('puppeteer');
-const {login, password, main_address} = require('./identifiers');
+const {login, password, main_address} = require('./variables');
 
 (async () => {
   const browser = await puppeteer.launch();
