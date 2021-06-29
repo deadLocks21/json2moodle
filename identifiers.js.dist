@@ -1,2 +1,3 @@
 const login = 'login';
 const password = 'password';
+const main_address = 'https://my_course.fr';
