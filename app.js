@@ -1,8 +1,13 @@
 const puppeteer = require("puppeteer");
-let { login, password, main_address, course_name } = require("./variables");
+let {
+  login,
+  password,
+  main_address,
+  course_name,
+} = require("./variables");
 
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch(/* { headless: false } */);
   const page = await browser.newPage();
 
   // Get the course
@@ -24,11 +29,8 @@ let { login, password, main_address, course_name } = require("./variables");
     return;
   }
 
-
-
-
   // Go to login page
-  await page.goto(`${main_address}/login/index.php`);
+  await page.goto(course_page_link);
 
   await page.click("#username");
   await page.keyboard.type(login);
@@ -36,10 +38,11 @@ let { login, password, main_address, course_name } = require("./variables");
   await page.click("#password");
   await page.keyboard.type(password);
 
-  await page.click("#loginbtn");
-  await page.waitForNavigation({ waitUntil: 'networkidle0' });
+  await page.click("#loginbtn", { waitUntil: "domcontentloaded" });
 
-
+  // Edit mode
+  await page.mouse.click(660, 160);
+  await page.waitForTimeout(1000);
 
   // Screen end page
   await page.screenshot({ path: "screens/example.png" });

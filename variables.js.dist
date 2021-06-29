@@ -1,6 +1,8 @@
-const login = 'login';
-const password = 'password';
-const main_address = 'https://my_course.fr';
-const course_name = "Course name";
+"use strict";
 
-module.exports = {login, password, main_address};
+let login = "login";
+let password = "password";
+let main_address = "https://my_course.fr";
+let course_name = "Course name";
+
+module.exports = { login, password, main_address, course_name };
