@@ -4,5 +4,7 @@ let login = "login";
 let password = "password";
 let main_address = "https://my_course.fr";
 let course_name = "Course name";
+let course_file = "course";
+let section_id = "section-x";
 
-module.exports = { login, password, main_address, course_name };
+module.exports = { login, password, main_address, course_name, course_file, section_id };

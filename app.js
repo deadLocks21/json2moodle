@@ -1,14 +1,18 @@
 const puppeteer = require("puppeteer");
+const fs = require("fs");
 let {
   login,
   password,
   main_address,
   course_name,
+  course_file,
+  section_id,
 } = require("./variables");
+var course = JSON.parse(fs.readFileSync(`courses/${course_file}.json`, 'utf8'));
 
 (async () => {
   const browser = await puppeteer.launch(/* { headless: false } */);
-  const page = await browser.newPage();
+  let page = await browser.newPage();
 
   // Get the course
   await page.goto(main_address);
@@ -41,8 +45,24 @@ let {
   await page.click("#loginbtn", { waitUntil: "domcontentloaded" });
 
   // Edit mode
-  await page.mouse.click(660, 160);
-  await page.waitForTimeout(1000);
+  await page.mouse.click(660, 160, {
+    waitUntil: ["domcontentloaded", "networkidle0"],
+  });
+  await page.waitForTimeout(2000);
+
+  // Set description
+  let section_internal_id = await page.$eval(`#${section_id}`, (el) =>
+    el
+      .getAttribute("aria-labelledby")
+      .replace("sectionid-", "")
+      .replace("-title", "")
+  );
+  await page.goto(
+    `${main_address}/course/editsection.php?id=${section_internal_id}&sr`
+  );
+  await page.click("#id_summary_editoreditable");
+  await page.keyboard.type(course.description);
+  await page.click("#id_submitbutton", { waitUntil: ["domcontentloaded", "networkidle0"] });
 
   // Screen end page
   await page.screenshot({ path: "screens/example.png" });
